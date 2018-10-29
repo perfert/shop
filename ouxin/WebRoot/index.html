@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>鸥信下载</title>
+<link rel="stylesheet" href="css/base.css" type="text/css" />
+<link rel="stylesheet" href="css/ouxin1.css" type="text/css" />
+</head>
+<script>
+	(function(doc, win) {
+		var docEl = doc.documentElement, resizeEvt = 'orientationchange' in window ? 'orientationchange'
+				: 'resize', recalc = function() {
+			var clientWidth = docEl.clientWidth;
+			if (!clientWidth)
+				return;
+			if (clientWidth >= 640) {
+				docEl.style.fontSize = '100px';
+			} else {
+				docEl.style.fontSize = 100 * (clientWidth / 640) + 'px';
+			}
+		};
+
+		if (!doc.addEventListener)
+			return;
+		win.addEventListener(resizeEvt, recalc, false);
+		doc.addEventListener('DOMContentLoaded', recalc, false);
+	})(document, window);
+</script>
+<body>
+	<!--1-->
+	<div class="content">
+		<a href="javascript:;"> <img src="./images/shouye.png" alt="">
+		</a>
+	</div>
+	<!--2-->
+	<div class="content2">
+		<h2>
+			开启红包新玩法的<br>APP
+		</h2>
+		<div class="images">
+			<a href="javascript:;"> <img src="./images/shouji.png" alt="">
+			</a>
+		</div>
+	</div>
+	<!--content3-->
+	<div class="content3">
+		<h2 class="one">超强大即时通讯</h2>
+		<h2 class="two">各种姿势聊好友</h2>
+		<ul class="list clearfix">
+			<li><a href="javascript:;" title=""> <img
+					src="./images/dianhua.png" alt="">
+					<h4>免费电话</h4> <span>国内外好友随时畅聊</span> </a>
+			</li>
+			<li><a href="javascript:;" title=""> <img
+					src="./images/liaotian.png" alt="">
+					<h4>聊天信息</h4> <span>支持文字语音图片等</span> </a>
+			</li>
+			<li><a href="javascript:;" title=""> <img
+					src="./images/huayang.png" alt="">
+					<h4>朋友圈</h4> <span>和鸥信朋友专享小圈</span> </a>
+			</li>
+			<li><a href="javascript:;" title=""> <img
+					src="./images/anquan.png" alt="">
+					<h4>花样互动</h4> <span>任性红包</span> </a>
+			</li>
+		</ul>
+	</div>
+
+	<footer>
+		<div class="logo">
+			<img src="./images/logo.png" alt="">
+		</div>
+		<div class="title">
+			<h2>鸥信</h2>
+			<p>不怕上瘾，就下载吧</p>
+		</div>
+		<div class="download">
+			<button id="down" type=""  name="" onclick="tz()">立刻下载</button>
+		</div>
+	</footer>
+
+	<script src="./oxin/jquery.js"></script>
+	<script src="./oxin/jquery-1.js"></script>
+	<script type="text/javascript">
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		function tz(){
+		    if(isAndroid){
+		   		 window.open("http://www.ouxinchat.com/upload/apk/ouxin.apk");
+		    }else if(isiOS){
+		        alert("即将开放!");//ios跳转的地址
+		    }else{
+		     	 window.open("http://www.ouxinchat.com/upload/apk/ouxin.apk");
+		    }
+		}
+	</script>
+</body>
+</html>

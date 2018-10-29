@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true">
+         
+	<diskStore path="${java.io.tmpdir}/ouxin/cache" />
+	
+	<defaultCache
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            diskSpoolBufferSizeMB="30"
+            maxEntriesLocalDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <persistence strategy="localTempSwap"/>
+    </defaultCache>
+
+	<!--
+    Sample cache named sampleCache2
+    This cache has a maximum of 1000 elements in memory. There is no overflow to disk, so 1000
+    is also the maximum cache size. Note that when a cache is eternal, timeToLive and
+    timeToIdle are not used and do not need to be specified.
+    
+    maxEntriesLocalDisk="1000"：表示磁盘中最大可以存在1000个元素
+    maxEntriesLocalHeap是用来限制当前缓存在堆内存上所能保存的最大元素数量的
+    eternal不多说，true表示缓存永久有效，false表示不为永久有效
+    timeToLiveSeconds =3600 timeToIdleSeconds =300(以上配置代表缓存有效时间为3600秒（自缓存建立起一个小时有效 ），在有效的一个小时内，如果连续五分钟未访问缓存，则缓存失效)
+    diskSpoolBufferSizeMB="20"：保存到磁盘的后台线程的缓存为20M
+    diskExpiryThreadIntervalSeconds ="120"：检查磁盘上的缓存超期的线程的运行周期为120s。
+    memoryStoreEvictionPolicy="LFU"Ehcache的三种清空策略
+    transactionalMode="off"：事务关闭（ehcache中的事务是怎么使用的？）
+    
+    persistence：表示Cache的持久化，它只有一个属性strategy，表示当前Cache对应的持久化策略。其可选值如下：
+    localTempSwap：当堆内存或者非堆内存里面的元素已经满了的时候，将其中的元素临时的存放在磁盘上，一旦重启就会消失。
+    localRestartable：该策略只对企业版Ehcache有用。它可以在重启的时候将堆内存或者非堆内存里面的元素持久化到硬盘上，重启之后再从硬盘上恢复元素到内存中。
+    none：不持久化缓存的元素
+    distributed：该策略不适用于单机，是用于分布式的。
+    -->
+    <cache name="member"
+           maxEntriesLocalHeap="15000"
+           eternal="false"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="FIFO">
+        <persistence strategy="none"/>
+        <cacheEventListenerFactory class="com.mas.web.listener.CustomerCacheEventListenerFactory" />
+    </cache>
+  
+</ehcache>

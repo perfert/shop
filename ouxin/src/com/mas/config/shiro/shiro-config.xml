@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+		>
+	<!--SHIRO 过滤器配置，bean的id值须与web中的filter-name的值相同-->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<!-- 未认证页面 URL -->
+		<property name="loginUrl" value="/manage/login" />
+		<!-- 认证成功 URL -->
+		<property name="successUrl" value="/manage/main" />
+		<!-- 已认证，但无操作权限 URL -->
+		<property name="unauthorizedUrl" value="/manage/unauthorized" />
+		<!-- 过滤器配置 -->
+		<property name="filters">
+			<map>
+				<entry key="logout" value-ref="logoutFilter"/>
+				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<entry key="roles" value-ref="permissionsAuthorizationFilter" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- SHIRO 主要业务管理器 -->  
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" 
+		p:authorizer-ref="userAuthorizingRealm"
+		p:authenticator-ref="modularRealmAuthenticator"
+		p:sessionManager-ref="shiroSessionManager" />
+		<!-- p:cacheManager-ref="shiroCacheManager" /> -->
+	
+	<!-- 退出Filter -->
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"
+		p:redirectUrl="/manage"/>
+	
+	<bean id="modularRealmAuthorizer" class="com.mas.security.shiro.SimpleModularRealmAuthorizer"
+		p:realms-ref="userAuthorizingRealm"/>
+	
+	<bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator"
+		p:realms-ref="userAuthorizingRealm"/>
+		
+	<bean id="userAuthorizingRealm" class="com.mas.security.shiro.SimpleUserAuthorizingRealm" />
+	
+	<!--替换默认的 login form 认证过滤器-->
+	<bean id="formAuthenticationFilter" class="com.mas.security.shiro.SimpleFormAuthenticationFilter"
+		p:usernameParam="account"
+		p:passwordParam="password" />
+		
+	<!-- Permission 过滤器 -->
+	<bean id="permissionsAuthorizationFilter" class="com.mas.security.shiro.SimplePermissionsAuthorizationFilter" />
+	
+	<!-- 保证实现了SHIRO内部 lifecycle 函数的 bean 执行 -->  
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+		p:staticMethod="org.apache.shiro.SecurityUtils.setSecurityManager"
+		p:arguments-ref="securityManager"/>
+	
+	<!-- 用户授权/认证信息Cache, 采用EhCache 缓存
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"
+		p:cacheManager-ref="ehCacheManager"/> -->  
+		
+	<!-- 缓存
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:/com/mas/config/shiro/shiro-ehcache.xml"
+		p:shared="true"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cacheManager-ref="ehCacheManager" /> -->
+	
+	<!-- 自定义filterChainDefinitionsMap,从数据库加载URL验证规则 -->
+	<bean id="simpleFilterChainDefinitions" class="com.mas.security.shiro.SimpleFilterChainDefinitions">
+		<property name="filterChainDefinitions">
+			<value>
+				/manage/logout = logout
+				/manage/login = authc
+			</value>
+		</property>
+	</bean>
+	
+	<!-- 会话管理器 -->
+	<bean id="shiroSessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
+	<bean id="shiroSessionManager" class="com.mas.security.shiro.SimpleWebSessionManager">
+		<property name="sessionDAO" ref="shiroSessionDAO"/>
+		<property name="sessionValidationInterval" value="18000000"/>  <!-- 相隔多久检查一次session的有效性 -->
+		<property name="globalSessionTimeout" value="18000000"/><!-- 60 * 1000 为1分钟 -->
+	    <property name="deleteInvalidSessions" value="true"/>
+	    <property name="sessionValidationSchedulerEnabled" value="true"/>
+	    <property name="sessionIdCookie" ref="sessionIdCookie"/>
+	</bean>
+	
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="simple_cms_session_id"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="18000000"/>
+    </bean>
+ 
+</beans>
