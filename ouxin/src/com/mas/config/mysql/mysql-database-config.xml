@@ -12,52 +12,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
 	default-lazy-init="true">
 		
-	<!-- 数据源 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://localhost:3306/chat?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="root"
-	p:password="12345678"
-	p:validationQuery="select 1 from dual"/>
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://localhost:3306/chat?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="root"
-	p:password="12345678"   
-	p:validationQuery="select 1 from dual"/>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://localhost:3306/chat3?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="oUxIng"
-	p:password="xXiongOX$66#6"
-	p:validationQuery="select 1 from dual"/>
-	
-	
-		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://13.56.160.116/ouxin?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="ouXDiB"
-	p:password="o.X1@iN-d#.B7!"
-	p:validationQuery="select 1 from dual"/>
-	
-		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://localhost:3306/chat2?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="root"
-	p:password="12345678"
-	p:validationQuery="select 1 from dual"/>
-	
-	
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-	p:driverClassName="com.mysql.jdbc.Driver"
-	p:url="jdbc:mysql://13.56.160.116/testdb?useUnicode=true&amp;characterEncoding=UTF-8"
-	p:username="oxiTstDb"
-	p:password="T.e$t0-x@Di#b"
-	p:validationQuery="select 1 from dual"/>
-	-->
 	<!-- 在mysql中utf8占3个字节，但是对于移动端的特殊表情符号来说，三个字节是不够的，他需要四个字节 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 	p:driverClassName="com.mysql.jdbc.Driver"
